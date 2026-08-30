@@ -1,51 +1,136 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator with Live Time</title>
+  <style>
+    body {
+      background-color: #d9c5b2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    .calculator {
+      background-color: #333d47;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+      width: 280px;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      color: #fff;
+      font-size: 14px;
+      margin-bottom: 8px;
+      padding: 0 5px;
+    }
+    .display {
+      background-color: #eae3d2;
+      height: 50px;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      font-size: 24px;
+      text-align: right;
+      padding: 5px 10px;
+      box-sizing: border-box;
+      margin-bottom: 15px;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    button {
+      padding: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4f5b66;
+      color: white;
+      cursor: pointer;
+    }
+    button:active {
+      background-color: #6c7a89;
+    }
+    .zero {
+      grid-column: span 2;
+    }
+  </style>
 </head>
-
 <body>
 
-    <div class="calculator">
-
-        <div class="date" id="date"></div>
-        <div class="time" id="time"></div>
-
-        <input type="text" id="display" readonly>
-
-        <div class="buttons">
-            <button onclick="clearDisplay()">C</button>
-            <button onclick="deleteLast()">⌫</button>
-            <button onclick="calculate('%')">%</button>
-            <button onclick="calculate('/')">÷</button>
-
-            <button onclick="calculate('7')">7</button>
-            <button onclick="calculate('8')">8</button>
-            <button onclick="calculate('9')">9</button>
-            <button onclick="calculate('*')">×</button>
-
-            <button onclick="calculate('4')">4</button>
-            <button onclick="calculate('5')">5</button>
-            <button onclick="calculate('6')">6</button>
-            <button onclick="calculate('-')">−</button>
-
-            <button onclick="calculate('1')">1</button>
-            <button onclick="calculate('2')">2</button>
-            <button onclick="calculate('3')">3</button>
-            <button onclick="calculate('+')">+</button>
-
-            <button onclick="calculate('0')" class="zero">0</button>
-            <button onclick="calculate('.')">.</button>
-            <button onclick="result()">=</button>
-        </div>
-
+  <div class="calculator">
+    <div class="top-bar">
+      <span>Calculator</span>
+      <span id="clock">00:00:00</span>
     </div>
+    <input type="text" id="result" class="display" readonly>
+    <div class="buttons">
+      <button onclick="clearDisplay()">C</button>
+      <button onclick="backspace()">⌫</button>
+      <button onclick="appendValue('%')">%</button>
+      <button onclick="appendValue('/')">÷</button>
+      
+      <button onclick="appendValue('7')">7</button>
+      <button onclick="appendValue('8')">8</button>
+      <button onclick="appendValue('9')">9</button>
+      <button onclick="appendValue('*')">×</button>
+      
+      <button onclick="appendValue('4')">4</button>
+      <button onclick="appendValue('5')">5</button>
+      <button onclick="appendValue('6')">6</button>
+      <button onclick="appendValue('-')">-</button>
+      
+      <button onclick="appendValue('1')">1</button>
+      <button onclick="appendValue('2')">2</button>
+      <button onclick="appendValue('3')">3</button>
+      <button onclick="appendValue('+')">+</button>
+      
+      <button onclick="appendValue('0')" class="zero">0</button>
+      <button onclick="appendValue('.')">.</button>
+      <button onclick="calculate()">=</button>
+    </div>
+  </div>
 
-    <script src="script.js"></script>
+  <script>
+    // Live Clock Function
+    function updateClock() {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString();
+      document.getElementById('clock').innerText = timeString;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Calculator Functions
+    const display = document.getElementById('result');
+
+    function appendValue(val) {
+      display.value += val;
+    }
+
+    function clearDisplay() {
+      display.value = '';
+    }
+
+    function backspace() {
+      display.value = display.value.slice(0, -1);
+    }
+
+    function calculate() {
+      try {
+        display.value = eval(display.value);
+      } catch (e) {
+        display.value = 'Error';
+      }
+    }
+  </script>
+
 </body>
 </html>
-```
